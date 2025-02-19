@@ -1,0 +1,51 @@
+//
+//  CoreDataProvider.swift
+//  ToDo-List App
+//
+//  Created by Lucas  Alcantara  on 19/02/25.
+//
+
+import Foundation
+import CoreData
+
+class CoreDataProvider {
+    
+    let persistentContainer: NSPersistentContainer
+    
+    var viewContext: NSManagedObjectContext {
+        persistentContainer.viewContext
+    }
+    
+    static var preview: CoreDataProvider = {
+        
+        let provider = CoreDataProvider(inMemory: true)
+        let viewContext = provider.viewContext
+        
+        for index in 1..<10 {
+            let todoItem = TodoItem(context: viewContext)
+            todoItem.title = "TodoItem \(index)"
+        }
+        
+        do {
+            try viewContext.save()
+        } catch {
+            print(error)
+        }
+        
+        return provider
+    }()
+    
+    init(inMemory: Bool = false) {
+        persistentContainer = NSPersistentContainer(name: "TodoModel")
+        
+        if inMemory {
+            persistentContainer.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
+        }
+        
+        persistentContainer.loadPersistentStores { _, error in
+            if let error {
+                fatalError("Core Data store failed to initialize \(error)")
+            }
+        }
+    }
+}
