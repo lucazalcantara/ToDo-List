@@ -1,8 +1,8 @@
 //
 //  CoreDataProvider.swift
-//  ToDo-List App
+//  ToDo
 //
-//  Created by Lucas  Alcantara  on 19/02/25.
+//  Created by Lucas  Alcantara  on 20/02/25.
 //
 
 import Foundation
@@ -24,6 +24,7 @@ class CoreDataProvider {
         for index in 1..<10 {
             let todoItem = TodoItem(context: viewContext)
             todoItem.title = "TodoItem \(index)"
+            todoItem.isCompleted = index % 2 == 0 ? true : false
         }
         
         do {
@@ -39,7 +40,7 @@ class CoreDataProvider {
         persistentContainer = NSPersistentContainer(name: "TodoModel")
         
         if inMemory {
-            persistentContainer.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
+            persistentContainer.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
         }
         
         persistentContainer.loadPersistentStores { _, error in
@@ -49,3 +50,4 @@ class CoreDataProvider {
         }
     }
 }
+

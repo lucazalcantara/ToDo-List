@@ -1,8 +1,8 @@
 //
 //  ContentView.swift
-//  ToDo-List App
+//  ToDo
 //
-//  Created by Lucas  Alcantara  on 19/02/25.
+//  Created by Lucas  Alcantara  on 20/02/25.
 //
 
 import SwiftUI
@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @Environment(\.managedObjectContext) private var context
+    @FetchRequest(sortDescriptors: []) private var todoItems: FetchedResults<TodoItem>
     @State private var title: String = ""
     
     private var isFormValid: Bool {
@@ -27,6 +28,14 @@ struct ContentView: View {
         }
     }
     
+    private var pendingTodoItems: [TodoItem] {
+        todoItems.filter { !$0.isCompleted }
+    }
+    
+    private var completedTodoItems: [TodoItem] {
+        todoItems.filter { $0.isCompleted }
+    }
+    
     var body: some View {
         VStack {
             TextField("Title", text: $title)
@@ -37,6 +46,20 @@ struct ContentView: View {
                         title = ""
                     }
                 }
+            List {
+                Section("Pending") {
+                    ForEach(pendingTodoItems) { todoItem in
+                        Text(todoItem.title ?? "")
+                    }
+                }
+                
+                Section("Completed") {
+                    ForEach(completedTodoItems) { todoItem in
+                        Text(todoItem.title ?? "")
+                    }
+                }
+            }.listStyle(.plain)
+            
             Spacer()
         }
         .padding()
@@ -50,3 +73,4 @@ struct ContentView: View {
             .environment(\.managedObjectContext, CoreDataProvider.preview.viewContext)
     }
 }
+

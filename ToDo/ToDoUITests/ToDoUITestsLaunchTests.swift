@@ -1,13 +1,13 @@
 //
-//  ToDo_List_AppUITestsLaunchTests.swift
-//  ToDo-List AppUITests
+//  ToDoUITestsLaunchTests.swift
+//  ToDoUITests
 //
-//  Created by Lucas  Alcantara  on 19/02/25.
+//  Created by Lucas  Alcantara  on 20/02/25.
 //
 
 import XCTest
 
-final class ToDo_List_AppUITestsLaunchTests: XCTestCase {
+final class ToDoUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true
